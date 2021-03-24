@@ -7,6 +7,8 @@ import tesoura from './src/assets/tesoura.jpg'
 
 function App(props) {
 	const [appMovement, setAppMovement] = React.useState()
+	const [totalPlayer, setTotalPlayer] = React.useState(0)
+	const [totalApp, setTotalApp] = React.useState(0)
 	const [result, setResult] = React.useState()
 	const movements = [pedra, papel, tesoura]
 
@@ -22,14 +24,23 @@ function App(props) {
 			(playerMovement === pedra && appMovement !== papel) ||
 			(playerMovement === papel && appMovement !== tesoura) ||
 			(playerMovement === tesoura && appMovement !== pedra)
-		)
+		) {
 			setResult(`Você venceu`)
-		else setResult(`App venceu`)
+			setTotalPlayer(totalPlayer + 1)
+		} else {
+			setResult(`App venceu`)
+			setTotalApp(totalApp + 1)
+		}
 	}
 
 	function _handleReset() {
 		setAppMovement()
 		setResult()
+	}
+	function _handleResetStats() {
+		_handleReset()
+		setTotalPlayer(0)
+		setTotalApp(0)
 	}
 
 	return (
@@ -53,7 +64,9 @@ function App(props) {
 				</TouchableOpacity>
 			</View>
 			<Text style={styles.result}> {result} </Text>
+			<Text> {`Total player: ${totalPlayer} x Total app: ${totalApp}`} </Text>
 			<Button title='Reiniciar o jogo' onPress={_handleReset} />
+			<Button title='Reiniciar estatísticas do jogo' onPress={_handleResetStats} />
 			<View style={{ marginBottom: 48 }} />
 		</View>
 	)
